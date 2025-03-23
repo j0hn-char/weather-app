@@ -11,7 +11,8 @@ class WeatherWrapper extends Component {
         super(props);
 
         this.state = {
-            weather: {}
+            data: null,
+            error: ''
         }
     }
 
@@ -20,11 +21,16 @@ class WeatherWrapper extends Component {
             .then(response => {
                 console.log(response.data)
                 this.setState({
-                    data: response.data
+                    data: response.data,
+                    error: ''
                 })
             })
             .catch(error => {
                 console.log(error)
+                this.setState({
+                    data: null,
+                    error: 'Please enter a valid city name'
+                })
             })
     }
 
@@ -44,8 +50,12 @@ class WeatherWrapper extends Component {
                 </div>
                 <div className="block">
                     {
-                        this.state.data && (
+                        (this.state.data && !this.state.error) ? (
                             this.displayWeather()
+                        ) : (
+                            <div>
+                                <h1 className="has-text-danger">{this.state.error}</h1>
+                            </div>
                         )
                     }
                 </div>
